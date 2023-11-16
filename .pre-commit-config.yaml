@@ -1,0 +1,13 @@
+default_language_version:
+  python: python3.11
+
+repos:
+  - repo: local
+    hooks:
+      - id: flake8
+        name: run flake8
+        language: system
+        entry: flake8 error-reproduction
+        pass_filenames: false
+        always_run: true
+        types: [python]

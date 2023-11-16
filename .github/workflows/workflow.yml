@@ -1,0 +1,43 @@
+name: workflow
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  fails:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        id: python-version
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Installing project dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: flake8
+        run: |
+          pre-commit run -a
+
+  passes:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        id: python-version
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+      - name: Installing project dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip uninstall -y flake8-import-restrictions
+      - name: flake8
+        run: |
+          pre-commit run -a
